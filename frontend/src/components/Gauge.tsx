@@ -17,7 +17,7 @@ export function Gauge({ score }: GaugeProps) {
     <div className="flex flex-col items-center justify-center relative">
       <svg height={radius * 2} width={radius * 2} className="transform -rotate-90">
         <circle
-          stroke="#1F2937"
+          stroke="#23163a"
           fill="transparent"
           strokeWidth={stroke}
           r={normalizedRadius}
@@ -25,7 +25,7 @@ export function Gauge({ score }: GaugeProps) {
           cy={radius}
         />
         <motion.circle
-          stroke="#00FF9D"
+          stroke="#a855f7"
           fill="transparent"
           strokeWidth={stroke}
           strokeDasharray={circumference}
@@ -43,11 +43,11 @@ export function Gauge({ score }: GaugeProps) {
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="text-2xl font-bold text-[#00FF9D]"
+          className="text-2xl font-bold text-[#a855f7] font-mono drop-shadow-[0_0_8px_rgba(168,85,247,0.45)]"
         >
           {score}%
         </motion.span>
-        <span className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Match</span>
+        <span className="text-[10px] text-[#94a3b8] uppercase tracking-wider font-semibold font-mono">Match</span>
       </div>
     </div>
   );
