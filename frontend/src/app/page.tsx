@@ -2,12 +2,12 @@
 
 import React, { useState, useRef, DragEvent, ChangeEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  UploadSimple, 
-  FilePdf, 
-  Briefcase, 
-  EnvelopeSimple, 
-  LinkedinLogo, 
+import {
+  UploadSimple,
+  FilePdf,
+  Briefcase,
+  EnvelopeSimple,
+  LinkedinLogo,
   Sparkle,
   Check,
   CheckCircle,
@@ -145,7 +145,7 @@ export default function Home() {
     if (stored) {
       try {
         setSavedAnalyses(JSON.parse(stored));
-      } catch (e) {}
+      } catch (e) { }
     }
   }, []);
 
@@ -340,26 +340,7 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-violet-600/10 rounded-full blur-[120px]"></div>
       </div>
 
-      <header className="relative z-20 border-b border-outline-variant bg-surface-container-lowest/50 backdrop-blur-md px-margin-mobile md:px-margin-desktop py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <a href="/" className="font-display-lg text-lg tracking-widest uppercase text-white hover:text-primary transition-colors drop-shadow-[0_0_8px_rgba(168,85,247,0.35)]">Stratum</a>
-            <span className="h-4 w-px bg-outline-variant ml-2"></span>
-            <span className="font-label-sm text-[10px] text-on-surface-variant uppercase tracking-widest ml-1">Recruiter Intelligence</span>
-          </div>
-          <div className="flex items-center gap-6">
-            {status === "success" && (
-              <button
-                onClick={handleReset}
-                className="flex items-center gap-2 px-3 py-1.5 rounded bg-surface-variant border border-outline-variant text-xs font-label-sm hover:text-primary hover:border-primary/50 transition-all cursor-pointer font-bold"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                <span>Nova Análise</span>
-              </button>
-            )}
-          </div>
-        </div>
-      </header>
+
 
       <main className="relative z-10 flex-1 w-full max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-12 flex items-center justify-center">
         <AnimatePresence mode="wait">
@@ -369,7 +350,7 @@ export default function Home() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full max-w-[448px] bg-surface-container border border-outline-variant rounded-[24px] p-8 shadow-2xl flex flex-col items-center justify-center text-center gap-6"
+              className="w-full max-w-[448px] bg-surface-container border border-outline-variant rounded-[24px] p-6 sm:p-8 shadow-2xl flex flex-col items-center justify-center text-center gap-6"
             >
               <div className="relative flex items-center justify-center w-20 h-20">
                 <motion.div
@@ -402,100 +383,110 @@ export default function Home() {
               variants={staggerContainer}
               initial="hidden"
               animate="show"
-              className="w-full grid grid-cols-12 gap-8 items-start"
+              className="w-full flex flex-col gap-6"
             >
-              <div className="col-span-12 lg:col-span-4 space-y-6">
-                <motion.div variants={staggerItem}>
-                  <GlowCard customSize className="w-full p-6 flex flex-col gap-6">
-                    <div>
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-950/50 to-zinc-900 border border-zinc-800 flex items-center justify-center mb-4 text-sm font-bold text-white tracking-wider font-mono">
-                      {getInitials(analysis.candidate.name)}
-                    </div>
-                    <h2 className="font-headline-lg text-xl font-bold text-white tracking-tight leading-tight">{analysis.candidate.name || "Sem informações"}</h2>
-                    <div className="flex flex-col gap-2.5 mt-4 text-xs text-on-surface-variant">
-                      <span className="flex items-center gap-2 font-label-sm">
-                        <EnvelopeSimple className="w-4 h-4 text-outline" />
-                        {analysis.candidate.email || "Sem informações"}
-                      </span>
-                      <span className="flex items-center gap-2 font-label-sm">
-                        <Phone className="w-4 h-4 text-outline" />
-                        {analysis.candidate.phone || "Sem informações"}
-                      </span>
-                      <span className="flex items-center gap-2 font-label-sm">
-                        <MapPin className="w-4 h-4 text-outline" />
-                        {analysis.candidate.location || "Sem informações"}
-                      </span>
-                      {analysis.candidate.linkedin ? (
-                        <a
-                          href={analysis.candidate.linkedin.startsWith("http") ? analysis.candidate.linkedin : `https://${analysis.candidate.linkedin}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 text-primary hover:underline font-label-sm font-bold"
-                        >
-                          <LinkedinLogo className="w-4 h-4" />
-                          LinkedIn
-                        </a>
-                      ) : (
-                        <span className="flex items-center gap-2 font-label-sm text-on-surface-variant/50">
-                          <LinkedinLogo className="w-4 h-4 text-outline" />
-                          Sem informações
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <hr className="border-outline-variant" />
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-surface-container-low border border-outline-variant rounded-xl p-4 flex flex-col gap-1">
-                      <span className="text-[9px] text-on-surface-variant uppercase font-label-sm font-bold tracking-wider">Experiência</span>
-                      <span className="text-sm font-bold text-white font-label-sm">{analysis.profile.years_of_experience} anos</span>
-                    </div>
-                    <div className="bg-surface-container-low border border-outline-variant rounded-xl p-4 flex flex-col gap-1">
-                      <span className="text-[9px] text-on-surface-variant uppercase font-label-sm font-bold tracking-wider">Senioridade</span>
-                      <span className="text-sm font-bold text-primary font-label-sm uppercase tracking-wider">{analysis.profile.estimated_seniority_level}</span>
-                    </div>
-                  </div>
+              <div className="flex justify-start">
+                <button
+                  onClick={handleReset}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded border border-primary/30 bg-primary/10 text-primary text-xs font-mono font-bold hover:bg-primary/20 hover:border-primary/50 transition-all shadow-[0_0_10px_rgba(168,85,247,0.1)] hover:shadow-[0_0_15px_rgba(168,85,247,0.2)] cursor-pointer"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <span>NOVA ANÁLISE</span>
+                </button>
+              </div>
+              <div className="grid grid-cols-12 gap-8 items-start w-full">
+                <div className="col-span-12 lg:col-span-4 space-y-6">
+                  <motion.div variants={staggerItem}>
+                    <GlowCard customSize className="w-full p-4 sm:p-6 flex flex-col gap-6">
+                      <div>
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-950/50 to-zinc-900 border border-zinc-800 flex items-center justify-center mb-4 text-sm font-bold text-white tracking-wider font-mono">
+                          {getInitials(analysis.candidate.name)}
+                        </div>
+                        <h2 className="font-headline-lg text-xl font-bold text-white tracking-tight leading-tight">{analysis.candidate.name || "Sem informações"}</h2>
+                        <div className="flex flex-col gap-2.5 mt-4 text-xs text-on-surface-variant">
+                          <span className="flex items-center gap-2 font-label-sm">
+                            <EnvelopeSimple className="w-4 h-4 text-outline" />
+                            {analysis.candidate.email || "Sem informações"}
+                          </span>
+                          <span className="flex items-center gap-2 font-label-sm">
+                            <Phone className="w-4 h-4 text-outline" />
+                            {analysis.candidate.phone || "Sem informações"}
+                          </span>
+                          <span className="flex items-center gap-2 font-label-sm">
+                            <MapPin className="w-4 h-4 text-outline" />
+                            {analysis.candidate.location || "Sem informações"}
+                          </span>
+                          {analysis.candidate.linkedin ? (
+                            <a
+                              href={analysis.candidate.linkedin.startsWith("http") ? analysis.candidate.linkedin : `https://${analysis.candidate.linkedin}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-2 text-primary hover:underline font-label-sm font-bold"
+                            >
+                              <LinkedinLogo className="w-4 h-4" />
+                              LinkedIn
+                            </a>
+                          ) : (
+                            <span className="flex items-center gap-2 font-label-sm text-on-surface-variant/50">
+                              <LinkedinLogo className="w-4 h-4 text-outline" />
+                              Sem informações
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <hr className="border-outline-variant" />
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="bg-surface-container-low border border-outline-variant rounded-xl p-4 flex flex-col gap-1">
+                          <span className="text-[9px] text-on-surface-variant uppercase font-label-sm font-bold tracking-wider">Experiência</span>
+                          <span className="text-sm font-bold text-white font-label-sm">{analysis.profile.years_of_experience} anos</span>
+                        </div>
+                        <div className="bg-surface-container-low border border-outline-variant rounded-xl p-4 flex flex-col gap-1">
+                          <span className="text-[9px] text-on-surface-variant uppercase font-label-sm font-bold tracking-wider">Senioridade</span>
+                          <span className="text-sm font-bold text-primary font-label-sm uppercase tracking-wider drop-shadow-[0_0_6px_rgba(168,85,247,0.4)]">{analysis.profile.estimated_seniority_level}</span>
+                        </div>
+                      </div>
                   </GlowCard>
                 </motion.div>
 
                 {analysis.job_match && (
                   <motion.div variants={staggerItem}>
-                    <GlowCard customSize className="w-full p-6 flex flex-col gap-6">
-                      <div className="flex items-center justify-between">
-                      <h3 className="font-headline-md text-sm font-bold text-white tracking-wide">Avaliação de Match</h3>
-                      <div className="scale-90 origin-right">
-                        <Gauge score={analysis.job_match.score} />
-                      </div>
-                    </div>
-                    <div className="space-y-4">
-                      <div className="space-y-1">
-                        <span className="text-[9px] font-label-sm uppercase font-bold tracking-wider text-on-surface-variant">Justificativa do Fit</span>
-                        <p className="text-xs text-on-surface-variant leading-relaxed font-medium font-sans">{analysis.job_match.justification}</p>
-                      </div>
-                      <div className="flex flex-col gap-4">
-                        <div className="space-y-2">
-                          <span className="text-[9px] font-label-sm uppercase font-bold tracking-wider text-primary">Pontos Fortes</span>
-                          <ul className="space-y-1.5">
-                            {analysis.job_match.strengths.map((ponto, pIdx) => (
-                              <li key={pIdx} className="text-xs text-on-background flex items-start gap-2 leading-relaxed font-sans">
-                                <Check className="w-3.5 h-3.5 text-emerald-500 mt-1 flex-shrink-0" />
-                                <span>{ponto}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div className="space-y-2">
-                          <span className="text-[9px] font-label-sm uppercase font-bold tracking-wider text-orange-400">Lacunas Identificadas</span>
-                          <ul className="space-y-1.5">
-                            {analysis.job_match.gaps_identified.map((lacuna, lIdx) => (
-                              <li key={lIdx} className="text-xs text-on-background flex items-start gap-2 leading-relaxed font-sans">
-                                <WarningCircle className="w-3.5 h-3.5 text-amber-500 mt-1 flex-shrink-0" />
-                                <span>{lacuna}</span>
-                              </li>
-                            ))}
-                          </ul>
+                    <GlowCard customSize className="w-full p-4 sm:p-6 flex flex-col gap-6">
+                      <div className="flex flex-col sm:flex-row gap-4 sm:gap-0 items-center justify-between w-full">
+                        <h3 className="font-headline-md text-sm font-bold text-white tracking-wide text-center sm:text-left">Avaliação de Match</h3>
+                        <div className="scale-90">
+                          <Gauge score={analysis.job_match.score} />
                         </div>
                       </div>
-                    </div>
+                      <div className="space-y-4">
+                        <div className="space-y-1">
+                          <span className="text-[9px] font-label-sm uppercase font-bold tracking-wider text-on-surface-variant">Justificativa do Fit</span>
+                          <p className="text-xs text-on-surface-variant leading-relaxed font-medium font-sans">{analysis.job_match.justification}</p>
+                        </div>
+                        <div className="flex flex-col gap-4">
+                          <div className="space-y-2">
+                            <span className="text-[9px] font-label-sm uppercase font-bold tracking-wider text-primary">Pontos Fortes</span>
+                            <ul className="space-y-1.5">
+                              {analysis.job_match.strengths.map((ponto, pIdx) => (
+                                <li key={pIdx} className="text-xs text-on-background flex items-start gap-2 leading-relaxed font-sans">
+                                  <Check className="w-3.5 h-3.5 text-emerald-500 mt-1 flex-shrink-0" />
+                                  <span>{ponto}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div className="space-y-2">
+                            <span className="text-[9px] font-label-sm uppercase font-bold tracking-wider text-orange-400">Lacunas Identificadas</span>
+                            <ul className="space-y-1.5">
+                              {analysis.job_match.gaps_identified.map((lacuna, lIdx) => (
+                                <li key={lIdx} className="text-xs text-on-background flex items-start gap-2 leading-relaxed font-sans">
+                                  <WarningCircle className="w-3.5 h-3.5 text-amber-500 mt-1 flex-shrink-0" />
+                                  <span>{lacuna}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
                     </GlowCard>
                   </motion.div>
                 )}
@@ -503,59 +494,60 @@ export default function Home() {
 
               <div className="col-span-12 lg:col-span-8 space-y-6">
                 <motion.div variants={staggerItem}>
-                  <GlowCard customSize className="w-full p-6 space-y-4">
+                  <GlowCard customSize className="w-full p-4 sm:p-6 space-y-4">
                     <h3 className="font-headline-md text-sm font-bold text-white tracking-wide">Resumo Profissional</h3>
-                  <p className="text-xs text-on-surface-variant leading-relaxed font-medium font-sans">{analysis.profile.professional_summary}</p>
+                    <p className="text-xs text-on-surface-variant leading-relaxed font-medium font-sans">{analysis.profile.professional_summary}</p>
                   </GlowCard>
                 </motion.div>
 
                 <motion.div variants={staggerItem}>
-                  <GlowCard customSize className="w-full p-6 space-y-6">
+                  <GlowCard customSize className="w-full p-4 sm:p-6 space-y-6">
                     <h3 className="font-headline-md text-sm font-bold text-white tracking-wide">Mapeamento de Competências</h3>
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <span className="text-[10px] text-on-surface-variant font-label-sm font-bold uppercase tracking-wider block">Hard Skills</span>
-                      <div className="flex flex-wrap gap-2">
-                        {analysis.skills.hard_skills.map((skill, sIdx) => {
-                          const exactMatch = isMatchExato(skill);
-                          const cat = getSkillCategory(skill);
-                          const bgClass = cat === "language" ? "bg-surface-variant" : "bg-surface-variant/60";
-                          const borderClass = exactMatch ? "border-emerald-500/80" : "border-outline-variant";
-                          return (
-                            <span
-                              key={sIdx}
-                              className={`px-2.5 py-1 text-on-background border text-xs rounded font-medium flex items-center gap-1.5 font-label-sm font-bold transition-all duration-300 ${bgClass} ${borderClass}`}
-                            >
-                              {getSkillIcon(skill)}
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <span className="text-[10px] text-on-surface-variant font-label-sm font-bold uppercase tracking-wider block">Hard Skills</span>
+                        <div className="flex flex-wrap gap-2">
+                          {analysis.skills.hard_skills.map((skill, sIdx) => {
+                            const exactMatch = isMatchExato(skill);
+                            const cat = getSkillCategory(skill);
+                            const bgClass = cat === "language" ? "bg-surface-variant" : "bg-surface-variant/60";
+                            const borderClass = exactMatch ? "border-emerald-500/80" : "border-outline-variant";
+                            return (
+                              <span
+                                key={sIdx}
+                                className={`px-2.5 py-1 text-on-background border text-xs rounded font-medium flex items-center gap-1.5 font-label-sm font-bold transition-all duration-300 ${bgClass} ${borderClass}`}
+                              >
+                                {getSkillIcon(skill)}
+                                <span>{skill}</span>
+                                {exactMatch && <Check className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <span className="text-[10px] text-on-surface-variant font-label-sm font-bold uppercase tracking-wider block">Soft Skills</span>
+                        <div className="flex flex-wrap gap-2">
+                          {analysis.skills.soft_skills.map((skill, sIdx) => (
+                            <span key={sIdx} className="px-2.5 py-1 bg-surface-variant/50 text-on-surface-variant border border-outline-variant/50 text-xs rounded font-medium flex items-center gap-1.5 font-label-sm font-bold">
+                              <Heart className="w-3.5 h-3.5 text-red-400" />
                               <span>{skill}</span>
-                              {exactMatch && <Check className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />}
                             </span>
-                          );
-                        })}
+                          ))}
+                        </div>
                       </div>
                     </div>
-                    <div className="space-y-2">
-                      <span className="text-[10px] text-on-surface-variant font-label-sm font-bold uppercase tracking-wider block">Soft Skills</span>
-                      <div className="flex flex-wrap gap-2">
-                        {analysis.skills.soft_skills.map((skill, sIdx) => (
-                          <span key={sIdx} className="px-2.5 py-1 bg-surface-variant/50 text-on-surface-variant border border-outline-variant/50 text-xs rounded font-medium flex items-center gap-1.5 font-label-sm font-bold">
-                            <Heart className="w-3.5 h-3.5 text-red-400" />
-                            <span>{skill}</span>
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
                   </GlowCard>
                 </motion.div>
 
                 <motion.div variants={staggerItem}>
-                  <GlowCard customSize className="w-full p-6 space-y-6">
+                  <GlowCard customSize className="w-full p-4 sm:p-6 space-y-6">
                     <h3 className="font-headline-md text-sm font-bold text-white tracking-wide">Linha do Tempo Profissional</h3>
-                  <Timeline items={analysis.professional_history} />
+                    <Timeline items={analysis.professional_history} />
                   </GlowCard>
                 </motion.div>
               </div>
+            </div>
             </motion.div>
           ) : (
             <motion.div
@@ -572,8 +564,8 @@ export default function Home() {
                       <span className="w-4 h-px bg-primary/40"></span>
                       Professional Suite
                     </div>
-                    <h1 className="font-display-lg text-on-surface leading-tight text-white">
-                      Central de Inteligência para <span className="text-primary drop-shadow-[0_0_10px_rgba(168,85,247,0.45)]">Recrutamento</span>
+                    <h1 className="font-display-lg text-on-surface leading-tight text-white text-3xl sm:text-4xl lg:text-[40px]">
+                      Central de Inteligência para <span className="text-primary tracking-wide" style={{ textShadow: "0 0 6px rgba(168, 85, 247, 0.85), 0 0 15px rgba(168, 85, 247, 0.45), 0 0 30px rgba(168, 85, 247, 0.2)" }}>Recrutamento</span>
                     </h1>
                     <p className="font-body-md text-on-surface-variant leading-relaxed w-full max-w-[448px] whitespace-normal font-sans">
                       Utilize análise semântica de alta precisão para cruzar perfis técnicos com descritivos de cargos complexos.
@@ -607,8 +599,12 @@ export default function Home() {
                           >
                             <div className="flex-1 min-w-0 pr-2">
                               <p className="text-sm font-medium text-on-surface truncate">{item.roleName}</p>
-                              <p className="text-[11px] text-on-surface-variant">
-                                Match: {item.matchScore}% • Candidato: {item.candidateName} • {getRelativeTime(item.timestamp)}
+                              <p className="text-[10px] sm:text-[11px] text-on-surface-variant flex flex-wrap gap-x-1 items-center">
+                                <span>Match: {item.matchScore}%</span>
+                                <span>•</span>
+                                <span className="truncate max-w-[100px] sm:max-w-none">Candidato: {item.candidateName}</span>
+                                <span>•</span>
+                                <span>{getRelativeTime(item.timestamp)}</span>
                               </p>
                             </div>
                             <div className="flex items-center gap-3 overflow-hidden">
@@ -643,7 +639,7 @@ export default function Home() {
                 </div>
 
                 <div className="lg:col-span-8">
-                  <GlowCard customSize className="w-full p-8 space-y-8">
+                  <GlowCard customSize className="w-full p-4 sm:p-6 md:p-8 space-y-6 md:space-y-8">
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
                         <label className="flex items-center gap-2 font-label-sm text-[11px] uppercase tracking-wider text-primary font-bold">
@@ -671,11 +667,10 @@ export default function Home() {
                         onDragOver={handleDrag}
                         onDragLeave={handleDrag}
                         onDrop={handleDrop}
-                        className={`relative glass-dropzone rounded group/zone cursor-pointer w-full transition-all duration-300 ${
-                          isDragging 
-                            ? "border-primary shadow-[0_0_15px_rgba(168,85,247,0.2)] bg-primary/5" 
-                            : "border-outline-variant"
-                        }`}
+                        className={`relative glass-dropzone rounded group/zone cursor-pointer w-full transition-all duration-300 ${isDragging
+                          ? "border-primary shadow-[0_0_15px_rgba(168,85,247,0.2)] bg-primary/5"
+                          : "border-outline-variant"
+                          }`}
                         id="drop-zone"
                       >
                         <div className="px-6 py-10 flex flex-col items-center justify-center text-center space-y-4">
@@ -734,8 +729,8 @@ export default function Home() {
                       </div>
                     )}
 
-                    <div className="pt-4 flex items-center justify-between gap-6 border-t border-outline-variant">
-                      <div className="flex-1 flex items-center gap-4 text-on-surface-variant">
+                    <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 border-t border-outline-variant">
+                      <div className="flex items-center justify-center sm:justify-start gap-4 sm:gap-6 text-on-surface-variant w-full sm:w-auto">
                         <div className="flex items-center gap-2">
                           <ShieldCheck className="text-sm" />
                           <span className="text-[10px] font-label-sm uppercase tracking-wider">PII Sanitized</span>
@@ -748,7 +743,7 @@ export default function Home() {
                       <button
                         onClick={handleAnalysis}
                         disabled={!file || isAnalyzing}
-                        className="relative bg-primary text-[#05020a] px-8 py-4 rounded font-display-lg text-sm font-bold uppercase tracking-[0.1em] hover:brightness-110 hover:violet-glow transition-all flex items-center gap-3 shadow-lg shadow-primary/5 disabled:opacity-30 cursor-pointer overflow-hidden"
+                        className="relative bg-primary text-[#05020a] w-full sm:w-auto justify-center px-8 py-4 rounded font-display-lg text-sm font-bold uppercase tracking-[0.1em] hover:brightness-110 hover:violet-glow transition-all flex items-center gap-3 shadow-lg shadow-primary/5 disabled:opacity-30 cursor-pointer overflow-hidden"
                         id="start-analysis"
                       >
                         {isAnalyzing ? (
