@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import compression from "compression";
 import multer from "multer";
 import * as path from "path";
 import * as fs from "fs";
@@ -16,6 +17,7 @@ if (!fs.existsSync(uploadDir)) {
 const upload = multer({ dest: uploadDir });
 
 app.use(cors());
+app.use(compression());
 app.use(express.json());
 
 app.post("/api/analisar", upload.single("resume"), handleResumeUpload);

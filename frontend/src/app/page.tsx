@@ -36,8 +36,9 @@ import {
   MapPin,
   Trash
 } from "@phosphor-icons/react";
-import { Gauge } from "@/components/Gauge";
-import { Timeline } from "@/components/Timeline";
+import dynamic from "next/dynamic";
+const Gauge = dynamic(() => import("@/components/Gauge").then((mod) => mod.Gauge), { ssr: false });
+const Timeline = dynamic(() => import("@/components/Timeline").then((mod) => mod.Timeline), { ssr: false });
 import { GlowCard } from "@/components/ui/spotlight-card";
 
 interface StratumAnalysis {
@@ -297,7 +298,7 @@ export default function Home() {
 
     const startTime = Date.now();
     try {
-      const response = await fetch("http://localhost:3000/api/analisar", {
+      const response = await fetch("/api/analisar", {
         method: "POST",
         body: formData,
       });
@@ -369,9 +370,9 @@ export default function Home() {
               <div className="w-full space-y-2 mt-2">
                 <div className="h-1 bg-surface-variant rounded-full overflow-hidden w-full relative">
                   <motion.div
-                    animate={{ left: ["-100%", "100%"] }}
+                    animate={{ x: ["-100%", "100%"] }}
                     transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-                    className="absolute top-0 bottom-0 w-1/2 scanning-line"
+                    className="absolute top-0 bottom-0 w-1/2 left-0 scanning-line"
                   />
                 </div>
                 <span className="text-[9px] font-label-sm text-on-surface-variant uppercase tracking-wider block">Mapeando fit profissional...</span>
@@ -765,9 +766,9 @@ export default function Home() {
                         {isAnalyzing && (
                           <div className="absolute bottom-0 left-0 right-0 h-1 bg-purple-950 overflow-hidden">
                             <motion.div
-                              animate={{ left: ["-100%", "100%"] }}
+                              animate={{ x: ["-100%", "100%"] }}
                               transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-                              className="absolute top-0 bottom-0 w-1/2 bg-primary"
+                              className="absolute top-0 bottom-0 w-1/2 left-0 bg-primary"
                             />
                           </div>
                         )}

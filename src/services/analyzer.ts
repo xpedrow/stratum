@@ -43,11 +43,48 @@ export async function analyzeResume(input: AnalysisInput): Promise<any> {
 
     let lastError: any = null;
 
-    for (let i = 0; i < STRATUM_MODELS.length; i++) {
-      const modelName = STRATUM_MODELS[i];
+    try {
+      const primaryModel = STRATUM_MODELS[0];
+      const response = await ai.models.generateContent({
+        model: primaryModel,
+        contents: [
+          {
+            fileData: {
+              fileUri: file.uri,
+              mimeType: file.mimeType
+            }
+          },
+          prompt
+        ],
+        config: {
+          systemInstruction,
+          responseMimeType: "application/json",
+          responseSchema: stratumAnalysisSchema
+        }
+      });
+
+      const text = response.text;
+      if (!text) {
+        throw new Error("Nenhum conteúdo retornado pelo modelo principal");
+      }
+
+      const parsed = JSON.parse(text);
+      parsed._meta = {
+        modelUsed: primaryModel,
+        fallbacksTriggered: 0
+      };
+
+      return parsed;
+    } catch (err: any) {
+      console.warn(`Falha ou limite de requisições no modelo principal: ${err.message || err}`);
+      lastError = err;
+
+      const fallbackModel = STRATUM_MODELS[1];
+      console.log(`Disparando fallback imediato para ${fallbackModel}...`);
+
       try {
         const response = await ai.models.generateContent({
-          model: modelName,
+          model: fallbackModel,
           contents: [
             {
               fileData: {
@@ -66,23 +103,19 @@ export async function analyzeResume(input: AnalysisInput): Promise<any> {
 
         const text = response.text;
         if (!text) {
-          throw new Error("Nenhum conteúdo retornado pelo modelo");
+          throw new Error("Nenhum conteúdo retornado pelo modelo de fallback");
         }
 
         const parsed = JSON.parse(text);
         parsed._meta = {
-          modelUsed: modelName,
-          fallbacksTriggered: i
+          modelUsed: fallbackModel,
+          fallbacksTriggered: 1
         };
 
         return parsed;
-      } catch (err: any) {
-        lastError = err;
-        console.warn(`Rate limit reached ou falha para ${modelName}: ${err.message || err}`);
-        if (i < STRATUM_MODELS.length - 1) {
-          const nextModel = STRATUM_MODELS[i + 1];
-          console.log(`Iniciando fallback para ${nextModel}...`);
-        }
+      } catch (fallbackErr: any) {
+        lastError = fallbackErr;
+        console.error(`Falha também no modelo de fallback: ${fallbackErr.message || fallbackErr}`);
       }
     }
 

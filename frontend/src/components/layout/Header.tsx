@@ -16,19 +16,6 @@ export default function Header() {
             Recruiter Intelligence
           </span>
         </div>
-        <div className="flex items-center gap-6">
-          <button className="flex items-center gap-1.5 text-xs font-mono text-zinc-400 hover:text-zinc-200 transition-colors font-semibold cursor-pointer">
-            <span>VB Snooker</span>
-            <CaretDown className="w-3.5 h-3.5" />
-          </button>
-          <button className="relative p-1.5 text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer">
-            <Bell className="w-4 h-4" />
-            <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.6)]"></span>
-          </button>
-          <div className="group flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-br from-purple-950/40 to-zinc-900 border border-zinc-800 text-[10px] font-mono font-bold text-purple-300 hover:border-purple-500/40 transition-colors cursor-pointer">
-            ST
-          </div>
-        </div>
       </div>
     </header>
   );

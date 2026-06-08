@@ -21,11 +21,8 @@ export async function handleResumeUpload(req: Request, res: Response): Promise<v
   } catch (error: any) {
     res.status(500).json({ error: error.message || "Erro interno no servidor" });
   } finally {
-    try {
-      if (fs.existsSync(file.path)) {
-        fs.unlinkSync(file.path);
-      }
-    } catch {
+    if (file && file.path) {
+      fs.unlink(file.path, () => {});
     }
   }
 }

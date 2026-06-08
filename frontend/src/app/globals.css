@@ -111,7 +111,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-surface-variant);
+  background: var(--color-primary-container);
   border-radius: 9999px;
 }
 
@@ -121,7 +121,7 @@ body {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-surface-variant) var(--color-background);
+  scrollbar-color: var(--color-primary-container) var(--color-background);
 }
 
 *:hover {
