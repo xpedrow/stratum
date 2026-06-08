@@ -40,6 +40,7 @@ import dynamic from "next/dynamic";
 const Gauge = dynamic(() => import("@/components/Gauge").then((mod) => mod.Gauge), { ssr: false });
 const Timeline = dynamic(() => import("@/components/Timeline").then((mod) => mod.Timeline), { ssr: false });
 import { GlowCard } from "@/components/ui/spotlight-card";
+import DescriptionInput from "@/components/ui/description-input";
 
 interface StratumAnalysis {
   candidate: {
@@ -641,21 +642,7 @@ export default function Home() {
 
                 <div className="lg:col-span-8">
                   <GlowCard customSize className="w-full p-4 sm:p-6 md:p-8 space-y-6 md:space-y-8">
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <label className="flex items-center gap-2 font-label-sm text-[11px] uppercase tracking-wider text-primary font-bold">
-                          <FileText className="text-[16px]" />
-                          Descrição da Vaga de Destino
-                        </label>
-                        <span className="text-[10px] text-on-surface-variant/60 italic">Copie e cole os requisitos técnicos e responsabilidades</span>
-                      </div>
-                      <textarea
-                        value={vagaText}
-                        onChange={(e) => setVagaText(e.target.value)}
-                        className="w-full h-48 bg-surface-container-lowest border border-outline-variant rounded px-4 py-3 font-body-md text-on-surface focus:ring-1 focus:ring-primary/40 focus:border-primary outline-none transition-all custom-scrollbar resize-none placeholder:text-slate-400 font-sans"
-                        placeholder="Ex: Buscamos profissional com 5+ anos de experiência em React, Node.js e arquitetura de microserviços..."
-                      />
-                    </div>
+                    <DescriptionInput value={vagaText} onChange={setVagaText} />
 
                     <div className="space-y-4">
                       <label className="flex items-center gap-2 font-label-sm text-[11px] uppercase tracking-wider text-primary font-bold">
