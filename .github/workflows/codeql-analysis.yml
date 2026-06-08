@@ -45,11 +45,7 @@ jobs:
 
       - name: Install dependencies (${{ matrix.workspace }})
         working-directory: ${{ matrix.directory }}
-        run: |
-          npm ci || npm install
-          if [ "${{ matrix.workspace }}" = "frontend" ]; then
-            npm ci --prefix frontend || npm install --prefix frontend
-          fi
+        run: npm ci || npm install
 
       - name: Build TypeScript (${{ matrix.workspace }})
         working-directory: ${{ matrix.directory }}
