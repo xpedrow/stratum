@@ -1,27 +1,58 @@
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
 import compression from "compression";
-import multer from "multer";
-import * as path from "path";
-import * as fs from "fs";
+import * as dotenv from "dotenv";
 import { handleResumeUpload } from "./controllers/upload";
+import { upload } from "./middleware/upload";
+import { apiRateLimit } from "./middleware/security";
+
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-const uploadDir = path.join(__dirname, "../tmp");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc:  ["'self'"],
+      objectSrc:  ["'none'"],
+      upgradeInsecureRequests: []
+    }
+  },
+  hsts: {
+    maxAge: 31536000,
+    includeSubDomains: true,
+    preload: true
+  }
+}));
+
+const allowedOrigin = process.env.ALLOWED_ORIGIN;
+if (!allowedOrigin) {
+  console.error("[FATAL] Variável ALLOWED_ORIGIN não definida. Encerrando.");
+  process.exit(1);
 }
 
-const upload = multer({ dest: uploadDir });
+app.use(cors({
+  origin: allowedOrigin,
+  methods: ["POST"],
+  allowedHeaders: ["Content-Type"],
+  credentials: false
+}));
 
-app.use(cors());
 app.use(compression());
-app.use(express.json());
+app.use(express.json({ limit: "50kb" }));
 
-app.post("/api/analisar", upload.single("resume"), handleResumeUpload);
+app.post(
+  "/api/analisar",
+  apiRateLimit,
+  upload.single("resume"),
+  handleResumeUpload
+);
 
 app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port}`);
+  if (process.env.NODE_ENV !== "production") {
+    console.log(`[dev] Servidor rodando na porta ${port}`);
+  }
 });

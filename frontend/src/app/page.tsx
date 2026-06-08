@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, DragEvent, ChangeEvent } from "react";
+import { JobMatchSection } from "@/components/JobMatchSection";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   UploadSimple,
@@ -41,37 +42,7 @@ const Gauge = dynamic(() => import("@/components/Gauge").then((mod) => mod.Gauge
 const Timeline = dynamic(() => import("@/components/Timeline").then((mod) => mod.Timeline), { ssr: false });
 import { GlowCard } from "@/components/ui/spotlight-card";
 import DescriptionInput from "@/components/ui/description-input";
-
-interface StratumAnalysis {
-  candidate: {
-    name: string;
-    email: string;
-    phone: string;
-    location: string;
-    linkedin?: string;
-  };
-  profile: {
-    professional_summary: string;
-    years_of_experience: number;
-    estimated_seniority_level: "Junior" | "Mid" | "Senior" | "Lead";
-  };
-  skills: {
-    hard_skills: string[];
-    soft_skills: string[];
-  };
-  professional_history: Array<{
-    company: string;
-    role: string;
-    period: string;
-    main_activities: string[];
-  }>;
-  job_match?: {
-    score: number;
-    justification: string;
-    strengths: string[];
-    gaps_identified: string[];
-  };
-}
+import { useStratumHistory, StratumAnalysis } from "@/hooks/useStratumHistory";
 
 const staggerContainer = {
   hidden: { opacity: 0 },
@@ -130,26 +101,9 @@ export default function Home() {
   const [status, setStatus] = useState<"idle" | "processing" | "success" | "error">("idle");
   const [analysis, setAnalysis] = useState<StratumAnalysis | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [savedAnalyses, setSavedAnalyses] = useState<Array<{
-    id: string;
-    timestamp: number;
-    candidateName: string;
-    roleName: string;
-    matchScore: number;
-    latency: number;
-    analysisData: StratumAnalysis;
-  }>>([]);
+  const { savedAnalyses, addAnalysis, deleteAnalysis, clearAll } = useStratumHistory();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  React.useEffect(() => {
-    const stored = localStorage.getItem("stratum_analyses");
-    if (stored) {
-      try {
-        setSavedAnalyses(JSON.parse(stored));
-      } catch (e) { }
-    }
-  }, []);
 
   const getInitials = (name: string) => {
     if (!name) return "ST";
@@ -181,31 +135,13 @@ export default function Home() {
     return firstLine || `Análise - ${data.profile.estimated_seniority_level}`;
   };
 
-  const saveAnalysis = (data: StratumAnalysis, latencySec: number) => {
-    const newAnalysis = {
-      id: Math.random().toString(36).substring(2, 9),
-      timestamp: Date.now(),
-      candidateName: data.candidate.name,
-      roleName: getRoleTitle(vagaText, data),
-      matchScore: data.job_match?.score || 0,
-      latency: latencySec,
-      analysisData: data
-    };
-    const updated = [newAnalysis, ...savedAnalyses].slice(0, 10);
-    setSavedAnalyses(updated);
-    localStorage.setItem("stratum_analyses", JSON.stringify(updated));
-  };
-
   const handleDeleteSaved = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
-    const updated = savedAnalyses.filter(item => item.id !== id);
-    setSavedAnalyses(updated);
-    localStorage.setItem("stratum_analyses", JSON.stringify(updated));
+    deleteAnalysis(id);
   };
 
   const handleClearAll = () => {
-    setSavedAnalyses([]);
-    localStorage.removeItem("stratum_analyses");
+    clearAll();
   };
 
   const getRelativeTime = (timestamp: number) => {
@@ -314,7 +250,7 @@ export default function Home() {
       const latencySec = (endTime - startTime) / 1000;
       setAnalysis(data);
       setStatus("success");
-      saveAnalysis(data, latencySec);
+      addAnalysis(data, getRoleTitle(vagaText, data), latencySec);
       setIsAnalyzing(false);
     } catch (err: any) {
       setError(err.message || "Erro de conexão com o servidor.");
@@ -459,36 +395,11 @@ export default function Home() {
                           <Gauge score={analysis.job_match.score} />
                         </div>
                       </div>
-                      <div className="space-y-4">
-                        <div className="space-y-1">
-                          <span className="text-[9px] font-label-sm uppercase font-bold tracking-wider text-on-surface-variant">Justificativa do Fit</span>
-                          <p className="text-xs text-on-surface-variant leading-relaxed font-medium font-sans">{analysis.job_match.justification}</p>
-                        </div>
-                        <div className="flex flex-col gap-4">
-                          <div className="space-y-2">
-                            <span className="text-[9px] font-label-sm uppercase font-bold tracking-wider text-primary">Pontos Fortes</span>
-                            <ul className="space-y-1.5">
-                              {analysis.job_match.strengths.map((ponto, pIdx) => (
-                                <li key={pIdx} className="text-xs text-on-background flex items-start gap-2 leading-relaxed font-sans">
-                                  <Check className="w-3.5 h-3.5 text-emerald-500 mt-1 flex-shrink-0" />
-                                  <span>{ponto}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                          <div className="space-y-2">
-                            <span className="text-[9px] font-label-sm uppercase font-bold tracking-wider text-orange-400">Lacunas Identificadas</span>
-                            <ul className="space-y-1.5">
-                              {analysis.job_match.gaps_identified.map((lacuna, lIdx) => (
-                                <li key={lIdx} className="text-xs text-on-background flex items-start gap-2 leading-relaxed font-sans">
-                                  <WarningCircle className="w-3.5 h-3.5 text-amber-500 mt-1 flex-shrink-0" />
-                                  <span>{lacuna}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
+                      <JobMatchSection
+                        justification={analysis.job_match.justification}
+                        strengths={analysis.job_match.strengths}
+                        gaps_identified={analysis.job_match.gaps_identified}
+                      />
                     </GlowCard>
                   </motion.div>
                 )}
