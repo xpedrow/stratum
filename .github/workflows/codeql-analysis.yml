@@ -45,7 +45,7 @@ jobs:
 
       - name: Install dependencies (${{ matrix.workspace }})
         working-directory: ${{ matrix.directory }}
-        run: npm ci
+        run: npm ci || npm install
 
       - name: Build TypeScript (${{ matrix.workspace }})
         working-directory: ${{ matrix.directory }}
