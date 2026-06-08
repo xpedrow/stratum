@@ -14,41 +14,38 @@ export default function NotFound() {
         <div className="absolute top-1/3 left-1/4 w-[300px] h-[300px] bg-violet-600/5 rounded-full blur-[100px]"></div>
       </div>
 
-      <div className="relative z-10 w-full max-w-[480px] flex flex-col items-center text-center gap-8">
-        <div className="relative flex items-center justify-center w-full">
+      <div className="relative z-10 w-full max-w-[480px] flex flex-col items-center text-center gap-6">
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="relative w-20 h-20 bg-surface-container-low border border-primary/20 rounded-2xl flex items-center justify-center shadow-2xl backdrop-blur-xl"
+        >
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-[120px] font-black tracking-tighter text-white/5 font-mono select-none"
+            animate={{ 
+              scale: [1, 1.08, 1],
+              rotate: [0, 5, -5, 0]
+            }}
+            transition={{ 
+              repeat: Infinity, 
+              duration: 4, 
+              ease: "easeInOut" 
+            }}
           >
-            404
+            <FileText className="w-10 h-10 text-primary" />
           </motion.div>
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            className="absolute inset-0 flex items-center justify-center"
-          >
-            <div className="relative w-24 h-24 bg-surface-container-low border border-primary/20 rounded-2xl flex items-center justify-center shadow-2xl backdrop-blur-xl">
-              <motion.div
-                animate={{ 
-                  scale: [1, 1.08, 1],
-                  rotate: [0, 5, -5, 0]
-                }}
-                transition={{ 
-                  repeat: Infinity, 
-                  duration: 4, 
-                  ease: "easeInOut" 
-                }}
-              >
-                <FileText className="w-12 h-12 text-primary" />
-              </motion.div>
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full animate-ping"></div>
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full"></div>
-            </div>
-          </motion.div>
-        </div>
+          <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-primary rounded-full animate-ping"></div>
+          <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-primary rounded-full"></div>
+        </motion.div>
+
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          className="text-7xl font-black tracking-tight text-white font-mono select-none"
+        >
+          404
+        </motion.div>
 
         <motion.div
           initial={{ y: 15, opacity: 0 }}
